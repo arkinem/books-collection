@@ -1,7 +1,17 @@
 import React from "react";
+import PageContainer from "../components/PageContainer";
+import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const NotFoundPage = () => {
-  return <div>Not found</div>;
+  return (
+    <PageContainer>
+      Not found
+      <Link to="/books">
+        <Button>Go to books</Button>
+      </Link>
+    </PageContainer>
+  );
 };
 
 export default NotFoundPage;

@@ -1,12 +1,13 @@
 import React from "react";
 import { Button } from "react-bootstrap";
+import PageContainer from "../components/PageContainer";
 
 const BooksPage = () => {
   return (
-    <div>
+    <PageContainer>
       Books
       <Button variant="primary">Primary</Button>
-    </div>
+    </PageContainer>
   );
 };
 
