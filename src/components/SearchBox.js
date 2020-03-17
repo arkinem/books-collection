@@ -26,7 +26,10 @@ class SearchBox extends React.Component {
     const { history, setTextFilter } = this.props;
     const { text } = this.state;
 
-    const url = updateQueryInUrl({ filter: text || undefined }, history);
+    const url = updateQueryInUrl(
+      { filter: text || undefined, page: 1 },
+      history
+    );
 
     history.push(url);
     setTextFilter(text);
