@@ -91,9 +91,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(BooksTable);
 const Container = styled.div`
   position: relative;
   min-height: 250px;
-  /* display: flex;
-  align-items: center;
-  justify-content: center; */
 `;
 
 const LoadingContainer = styled.div`
