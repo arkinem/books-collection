@@ -24,16 +24,16 @@ class BooksTable extends React.Component {
       message = "Something went wrong. Please try again later.";
 
     return (
-      <Container>
-        <p>{message}</p>
-      </Container>
+      <tr>
+        <td colspan="7">
+          <Message>{message}</Message>
+        </td>
+      </tr>
     );
   };
 
   render() {
     const { books, error, loading } = this.props;
-
-    if (error || books.length === 0) return this.renderMessage();
 
     return (
       <Container>
@@ -50,19 +50,21 @@ class BooksTable extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.books.map((book, index) => (
-              <tr key={index}>
-                <TableCell data-toggle="tooltip" data-placement="top">
-                  {book.id}
-                </TableCell>
-                <TableCell>{book.book_title}</TableCell>
-                <TableCell>{book.book_author}</TableCell>
-                <TableCell>{book.book_publication_year}</TableCell>
-                <TableCell>{book.book_publication_city}</TableCell>
-                <TableCell>{book.book_publication_country}</TableCell>
-                <TableCell>{book.book_pages}</TableCell>
-              </tr>
-            ))}
+            {!loading && (books.length === 0 || error)
+              ? this.renderMessage()
+              : books.map((book, index) => (
+                  <tr key={index}>
+                    <TableCell data-toggle="tooltip" data-placement="top">
+                      {book.id}
+                    </TableCell>
+                    <TableCell>{book.book_title}</TableCell>
+                    <TableCell>{book.book_author}</TableCell>
+                    <TableCell>{book.book_publication_year}</TableCell>
+                    <TableCell>{book.book_publication_city}</TableCell>
+                    <TableCell>{book.book_publication_country}</TableCell>
+                    <TableCell>{book.book_pages}</TableCell>
+                  </tr>
+                ))}
           </tbody>
         </Table>
 
@@ -104,4 +106,13 @@ const LoadingContainer = styled.div`
   align-items: center;
   justify-content: center;
   opacity: 0.8;
+`;
+
+const Message = styled.div`
+  min-height: 150px;
+  min-width: 350px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
