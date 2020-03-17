@@ -2,6 +2,7 @@ import React from "react";
 import PageContainer from "../components/PageContainer";
 import SearchBox from "../components/SearchBox";
 import BooksTable from "../components/BooksTable";
+import TablePagination from "../components/TablePagination";
 
 class BooksPage extends React.Component {
   state = {
@@ -13,6 +14,7 @@ class BooksPage extends React.Component {
       <PageContainer>
         <SearchBox />
         <BooksTable />
+        <TablePagination />
       </PageContainer>
     );
   }

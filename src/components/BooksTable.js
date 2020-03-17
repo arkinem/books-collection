@@ -1,8 +1,10 @@
 import React from "react";
-import { Table, Spinner } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { fetchBooks } from "../store/books/actions";
+import colors from "../helpers/colors";
+import DelayedSpinner from "./Spinner";
 
 class BooksTable extends React.Component {
   state = {
@@ -13,13 +15,7 @@ class BooksTable extends React.Component {
     this.props.fetchBooks();
   }
 
-  renderLoading = () => (
-    <Container>
-      <Spinner animation="border" role="status" variant="primary">
-        <span className="sr-only">Loading...</span>
-      </Spinner>
-    </Container>
-  );
+  renderLoading = () => <Container></Container>;
 
   renderMessage = () => {
     let message = "";
@@ -35,8 +31,11 @@ class BooksTable extends React.Component {
     );
   };
 
-  renderData = () => {
-    const { books } = this.props;
+  render() {
+    const { books, error, loading } = this.props;
+
+    if (error || books.length === 0) return this.renderMessage();
+
     return (
       <Container>
         <Table striped bordered responsive>
@@ -65,17 +64,14 @@ class BooksTable extends React.Component {
             ))}
           </tbody>
         </Table>
+
+        {loading && (
+          <LoadingContainer>
+            <DelayedSpinner />
+          </LoadingContainer>
+        )}
       </Container>
     );
-  };
-
-  render() {
-    const { books, error, loading } = this.props;
-
-    if (loading) return this.renderLoading();
-    if (error || books.length === 0) return this.renderMessage();
-
-    return this.renderData();
   }
 }
 
@@ -92,8 +88,22 @@ const mapDispatchToProps = dispatch => ({
 export default connect(mapStateToProps, mapDispatchToProps)(BooksTable);
 
 const Container = styled.div`
+  position: relative;
   min-height: 250px;
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const LoadingContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: ${colors.background};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
 `;

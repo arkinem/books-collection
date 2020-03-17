@@ -2,20 +2,12 @@ import axios from "axios";
 import types from "./types";
 
 const serviceBaseUrl = "http://nyx.vima.ekt.gr:3000";
-const config = {
-  method: "POST",
-  url: `${serviceBaseUrl}/api/books`,
-  data: {
-    page: 1,
-    itemsPerPage: 8,
-    filters: []
-  }
-};
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export const fetchBooks = () => {
+export const fetchBooks = (page = 1, textFilter = "") => {
   const fetchBooksBegin = () => ({
     type: types.FETCH_BOOKS_BEGIN
   });
@@ -33,8 +25,19 @@ export const fetchBooks = () => {
   return async (dispatch, getState) => {
     dispatch(fetchBooksBegin());
     console.log("fetchBooksBegin");
+
+    const config = {
+      method: "POST",
+      url: `${serviceBaseUrl}/api/books`,
+      data: {
+        page: page,
+        itemsPerPage: getState().itemsPerPage,
+        filters: [{ type: "all", values: [textFilter] }]
+      }
+    };
+
     try {
-      await sleep(3000);
+      // await sleep(3000);
       const { data } = await axios(config);
       dispatch(fetchBooksSuccess(data.books, data.count));
       console.log("fetchBooksSuccess");

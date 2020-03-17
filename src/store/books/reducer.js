@@ -3,6 +3,7 @@ import types from "./types";
 const initialState = {
   books: [],
   count: 0,
+  itemsPerPage: 6,
   loading: false,
   error: null
 };
@@ -26,6 +27,7 @@ const booksReducer = (state = initialState, action) => {
     case types.FETCH_BOOKS_FAILURE:
       return {
         ...state,
+        count: 0,
         loading: false,
         error: action.payload.error
       };
