@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import Pagination from "react-js-pagination";
+import queryString from "query-string";
 import { withRouter } from "react-router-dom";
 import { setCurrentPage } from "../store/books/actions";
 import { updateQueryInUrl } from "../helpers/url";
@@ -14,6 +15,13 @@ class TablePagination extends React.Component {
   componentDidMount = () => {
     this.updateWindowWidth();
     window.addEventListener("resize", this.updateWindowWidth);
+  };
+
+  componentDidUpdate = prevProps => {
+    if (prevProps.location.search !== this.props.location.search) {
+      const { page } = queryString.parse(window.location.search);
+      this.props.setCurrentPage(parseInt(page));
+    }
   };
 
   componentWillUnmount = () => {

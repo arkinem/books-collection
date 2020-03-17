@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Button, Form } from "react-bootstrap";
 import styled from "styled-components";
+import queryString from "query-string";
 import { setTextFilter } from "../store/books/actions";
 import { withRouter } from "react-router-dom";
 import { updateQueryInUrl } from "../helpers/url";
@@ -14,6 +15,11 @@ class SearchBox extends React.Component {
   componentDidUpdate = prevProps => {
     if (prevProps.textFilter !== this.props.textFilter)
       this.setState({ text: this.props.textFilter });
+
+    if (prevProps.location.search !== this.props.location.search) {
+      const { filter } = queryString.parse(window.location.search);
+      this.props.setTextFilter(filter || "");
+    }
   };
 
   handleSearch = () => {
