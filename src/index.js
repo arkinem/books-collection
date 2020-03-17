@@ -1,15 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import "./custom.scss";
 import AppRouter from "./navigation/AppRouter";
-import { Reset } from "styled-reset";
+// import { Reset } from "styled-reset";
+import configureStore from "./store/configureStore";
+
+const store = configureStore();
 
 const app = (
-  <>
-    <Reset />
+  <Provider store={store}>
+    {/* <Reset /> */}
     <AppRouter />
-  </>
+  </Provider>
 );
 
 ReactDOM.render(app, document.getElementById("root"));

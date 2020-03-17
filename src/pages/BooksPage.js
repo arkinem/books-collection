@@ -1,14 +1,21 @@
 import React from "react";
-import { Button } from "react-bootstrap";
 import PageContainer from "../components/PageContainer";
+import SearchBox from "../components/SearchBox";
+import BooksTable from "../components/BooksTable";
 
-const BooksPage = () => {
-  return (
-    <PageContainer>
-      Books
-      <Button variant="primary">Primary</Button>
-    </PageContainer>
-  );
-};
+class BooksPage extends React.Component {
+  state = {
+    textFilter: ""
+  };
+
+  render() {
+    return (
+      <PageContainer>
+        <SearchBox />
+        <BooksTable />
+      </PageContainer>
+    );
+  }
+}
 
 export default BooksPage;

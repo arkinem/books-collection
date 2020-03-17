@@ -17,6 +17,9 @@ const Container = styled.div`
 `;
 
 const ContentContainer = styled.div`
+  margin: 20px 0;
+  max-width: 94%;
+  min-width: 350px;
   padding: 16px;
   border-radius: 4px;
   background: ${colors.background};
