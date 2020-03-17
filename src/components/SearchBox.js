@@ -1,10 +1,29 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Button, Form } from "react-bootstrap";
 import styled from "styled-components";
+import { setTextFilter } from "../store/books/actions";
+import { withRouter } from "react-router-dom";
+import { updateQueryInUrl } from "../helpers/url";
 
 class SearchBox extends React.Component {
   state = {
-    textFilter: ""
+    text: this.props.textFilter
+  };
+
+  componentDidUpdate = prevProps => {
+    if (prevProps.textFilter !== this.props.textFilter)
+      this.setState({ text: this.props.textFilter });
+  };
+
+  handleSearch = () => {
+    const { history, setTextFilter } = this.props;
+    const { text } = this.state;
+
+    const url = updateQueryInUrl({ filter: text || undefined }, history);
+
+    history.push(url);
+    setTextFilter(text);
   };
 
   render() {
@@ -13,20 +32,31 @@ class SearchBox extends React.Component {
         <Form.Control
           type="text"
           placeholder="Search"
-          value={this.state.textFilter}
-          onChange={e => this.setState({ textFilter: e.target.value })}
+          value={this.state.text}
+          onChange={e => this.setState({ text: e.target.value })}
         />
 
-        <SearchButton variant="primary">Search</SearchButton>
+        <SearchButton variant="primary" onClick={this.handleSearch}>
+          Search
+        </SearchButton>
       </Container>
     );
   }
 }
 
-export default SearchBox;
+const mapStateToProps = ({ textFilter }) => ({
+  textFilter
+});
+
+const mapDispatchToProps = dispatch => ({
+  setTextFilter: text => dispatch(setTextFilter(text))
+});
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(SearchBox)
+);
 
 const Container = styled(Form)`
-  /* min-width: 300px; */
   display: flex;
   flex-direction: row;
   margin-bottom: 16px;

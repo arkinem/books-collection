@@ -1,61 +1,76 @@
 import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { fetchBooks } from "../store/books/actions";
-import ReactPaginate from "react-paginate";
-import colors from "../helpers/colors";
+import Pagination from "react-js-pagination";
+import { withRouter } from "react-router-dom";
+import { setCurrentPage } from "../store/books/actions";
+import { updateQueryInUrl } from "../helpers/url";
 
 class TablePagination extends React.Component {
   state = {
-    textFilter: ""
+    windowWidth: 0
   };
 
-  handlePageClick = ({ selected }) => {
-    const pageIndex = selected + 1;
-    this.props.fetchBooks(pageIndex);
+  componentDidMount = () => {
+    this.updateWindowWidth();
+    window.addEventListener("resize", this.updateWindowWidth);
+  };
+
+  componentWillUnmount = () => {
+    window.removeEventListener("resize", this.updateWindowWidth);
+  };
+
+  updateWindowWidth = () => {
+    this.setState({ windowWidth: window.innerWidth });
+  };
+
+  handlePageChange = pageIndex => {
+    const { history, setCurrentPage } = this.props;
+
+    const url = updateQueryInUrl({ page: pageIndex }, history);
+
+    history.push(url);
+    setCurrentPage(pageIndex);
   };
 
   render() {
-    const { count, itemsPerPage } = this.props;
+    const { count, itemsPerPage, currentPage } = this.props;
+    const { windowWidth } = this.state;
 
     if (count === 0) return null;
+
     return (
       <Container>
-        <ReactPaginate
-          pageCount={count / itemsPerPage}
-          marginPagesDisplayed={2}
+        <Pagination
+          activePage={currentPage}
+          itemsCountPerPage={itemsPerPage}
+          totalItemsCount={count}
           pageRangeDisplayed={5}
-          onPageChange={this.handlePageClick}
-          breakClassName={"page-item"}
-          breakLinkClassName={"page-link"}
-          containerClassName={"pagination"}
-          pageClassName={"page-item"}
-          pageLinkClassName={"page-link"}
-          previousClassName={"page-item"}
-          previousLinkClassName={"page-link"}
-          nextClassName={"page-item"}
-          nextLinkClassName={"page-link"}
-          activeClassName={"active"}
+          onChange={this.handlePageChange}
+          itemClass="page-item"
+          linkClass="page-link"
         />
       </Container>
     );
   }
 }
 
-const mapStateToProps = ({ books, loading, count, itemsPerPage }) => ({
-  books,
-  loading,
+const mapStateToProps = ({ count, itemsPerPage, currentPage }) => ({
   count,
-  itemsPerPage
+  itemsPerPage,
+  currentPage
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchBooks: page => dispatch(fetchBooks(page))
+  setCurrentPage: page => dispatch(setCurrentPage(page))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TablePagination);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(TablePagination)
+);
 
 const Container = styled.div`
   display: flex;
   justify-content: flex-end;
+  margin-top: 20px;
 `;

@@ -3,11 +3,7 @@ import types from "./types";
 
 const serviceBaseUrl = "http://nyx.vima.ekt.gr:3000";
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-export const fetchBooks = (page = 1, textFilter = "") => {
+export const fetchBooks = () => {
   const fetchBooksBegin = () => ({
     type: types.FETCH_BOOKS_BEGIN
   });
@@ -24,27 +20,33 @@ export const fetchBooks = (page = 1, textFilter = "") => {
 
   return async (dispatch, getState) => {
     dispatch(fetchBooksBegin());
-    console.log("fetchBooksBegin");
 
     const config = {
       method: "POST",
       url: `${serviceBaseUrl}/api/books`,
       data: {
-        page: page,
+        page: getState().currentPage,
         itemsPerPage: getState().itemsPerPage,
-        filters: [{ type: "all", values: [textFilter] }]
+        filters: [{ type: "all", values: [getState().textFilter] }]
       }
     };
 
     try {
-      // await sleep(3000);
       const { data } = await axios(config);
       dispatch(fetchBooksSuccess(data.books, data.count));
-      console.log("fetchBooksSuccess");
     } catch (error) {
       console.log(JSON.stringify(error));
       dispatch(fetchBooksFailure(error.response));
-      console.log("fetchBooksFailure");
     }
   };
 };
+
+export const setTextFilter = text => ({
+  type: types.SET_TEXT_FILTER,
+  payload: { text }
+});
+
+export const setCurrentPage = page => ({
+  type: types.SET_CURRENT_PAGE,
+  payload: { page }
+});

@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { fetchBooks } from "../store/books/actions";
 import colors from "../helpers/colors";
 import DelayedSpinner from "./Spinner";
+import TableCell from "./TableCell";
 
 class BooksTable extends React.Component {
   state = {
@@ -14,8 +15,6 @@ class BooksTable extends React.Component {
   componentDidMount() {
     this.props.fetchBooks();
   }
-
-  renderLoading = () => <Container></Container>;
 
   renderMessage = () => {
     let message = "";
@@ -51,15 +50,17 @@ class BooksTable extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.books.map(book => (
-              <tr>
-                <td>{book.id}</td>
-                <td>{book.book_title}</td>
-                <td>{book.book_author}</td>
-                <td>{book.book_publication_year}</td>
-                <td>{book.book_publication_city}</td>
-                <td>{book.book_publication_country}</td>
-                <td>{book.book_pages}</td>
+            {this.props.books.map((book, index) => (
+              <tr key={index}>
+                <TableCell data-toggle="tooltip" data-placement="top">
+                  {book.id}
+                </TableCell>
+                <TableCell>{book.book_title}</TableCell>
+                <TableCell>{book.book_author}</TableCell>
+                <TableCell>{book.book_publication_year}</TableCell>
+                <TableCell>{book.book_publication_city}</TableCell>
+                <TableCell>{book.book_publication_country}</TableCell>
+                <TableCell>{book.book_pages}</TableCell>
               </tr>
             ))}
           </tbody>
@@ -90,9 +91,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(BooksTable);
 const Container = styled.div`
   position: relative;
   min-height: 250px;
-  display: flex;
+  /* display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
 `;
 
 const LoadingContainer = styled.div`

@@ -7,7 +7,7 @@ export default () => (
   <BrowserRouter>
     <Switch>
       <Route exact path="/">
-        <Redirect to="/books" />
+        <Redirect to="/books?page=1" />
       </Route>
       <Route path="/books">
         <BooksPage />
