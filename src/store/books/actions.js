@@ -24,8 +24,7 @@ export const fetchBooks = () => {
 
     const config = {
       method: "POST",
-      // url: `${httpsProxy}/${serviceBaseUrl}/api/books`,
-      url: `${serviceBaseUrl}/api/books`,
+      url: `${httpsProxy}/${serviceBaseUrl}/api/books`,
       data: {
         page: getState().currentPage,
         itemsPerPage: getState().itemsPerPage,
