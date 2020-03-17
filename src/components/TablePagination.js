@@ -8,15 +8,6 @@ import { setCurrentPage } from "../store/books/actions";
 import { updateQueryInUrl } from "../helpers/url";
 
 class TablePagination extends React.Component {
-  state = {
-    windowWidth: 0
-  };
-
-  componentDidMount = () => {
-    this.updateWindowWidth();
-    window.addEventListener("resize", this.updateWindowWidth);
-  };
-
   componentDidUpdate = prevProps => {
     if (prevProps.location.search !== this.props.location.search) {
       const { page } = queryString.parse(window.location.search);
@@ -30,14 +21,6 @@ class TablePagination extends React.Component {
     }
   };
 
-  componentWillUnmount = () => {
-    window.removeEventListener("resize", this.updateWindowWidth);
-  };
-
-  updateWindowWidth = () => {
-    this.setState({ windowWidth: window.innerWidth });
-  };
-
   handlePageChange = pageIndex => {
     const { history, setCurrentPage } = this.props;
 
@@ -49,7 +32,6 @@ class TablePagination extends React.Component {
 
   render() {
     const { count, itemsPerPage, currentPage } = this.props;
-    const { windowWidth } = this.state;
 
     if (count === 0) return null;
 
@@ -59,7 +41,7 @@ class TablePagination extends React.Component {
           activePage={currentPage}
           itemsCountPerPage={itemsPerPage}
           totalItemsCount={count}
-          pageRangeDisplayed={5}
+          pageRangeDisplayed={currentPage >= 100 ? 3 : 5}
           onChange={this.handlePageChange}
           itemClass="page-item"
           linkClass="page-link"

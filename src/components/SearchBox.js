@@ -40,7 +40,7 @@ class SearchBox extends React.Component {
       <Container onSubmit={e => e.preventDefault()}>
         <Form.Control
           type="text"
-          placeholder="Search"
+          placeholder="Search books collection"
           value={this.state.text}
           onChange={e => this.setState({ text: e.target.value })}
         />
