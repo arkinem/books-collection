@@ -1,6 +1,7 @@
 import axios from "axios";
 import types from "./types";
 
+const httpsProxy = "https://cors-anywhere.herokuapp.com";
 const serviceBaseUrl = "http://nyx.vima.ekt.gr:3000";
 
 export const fetchBooks = () => {
@@ -23,7 +24,7 @@ export const fetchBooks = () => {
 
     const config = {
       method: "POST",
-      url: `${serviceBaseUrl}/api/books`,
+      url: `${httpsProxy}/${serviceBaseUrl}/api/books`,
       data: {
         page: getState().currentPage,
         itemsPerPage: getState().itemsPerPage,
