@@ -6,7 +6,11 @@ export default ({ children }) => (
   <OverlayTrigger
     key={"top"}
     placement={"top"}
-    overlay={<Tooltip id={`tooltip-top`}>{children || "No value"}</Tooltip>}
+    overlay={
+      <Tooltip id={`tooltip-top`}>
+        {children !== "" ? children : "No value"}
+      </Tooltip>
+    }
   >
     <Cell variant="secondary">{children}</Cell>
   </OverlayTrigger>
