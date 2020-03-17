@@ -34,7 +34,7 @@ class SearchBox extends React.Component {
 
   render() {
     return (
-      <Container>
+      <Container onSubmit={e => e.preventDefault()}>
         <Form.Control
           type="text"
           placeholder="Search"
