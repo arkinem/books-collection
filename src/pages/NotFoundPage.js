@@ -7,7 +7,7 @@ const NotFoundPage = () => {
   return (
     <PageContainer>
       Not found
-      <Link to="/books?page=0">
+      <Link to="/books?page=1">
         <Button>Go to books</Button>
       </Link>
     </PageContainer>
