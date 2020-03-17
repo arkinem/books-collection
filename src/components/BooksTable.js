@@ -20,8 +20,14 @@ class BooksTable extends React.Component {
     let message = "";
 
     if (this.props.books.length === 0) message = "No books";
-    if (this.props.error)
-      message = "Something went wrong. Please try again later.";
+    if (this.props.error) {
+      if (this.props.error.status === 429) {
+        message =
+          "This website uses cors-anywhere to allow https website to call http service (otherwise blocked in Chrome). There is a limit of 50 requests per hour. Please try again later.";
+      } else {
+        message = "Something went wrong. Please try again later.";
+      }
+    }
 
     return (
       <tr>
