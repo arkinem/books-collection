@@ -22,6 +22,12 @@ class TablePagination extends React.Component {
       const { page } = queryString.parse(window.location.search);
       this.props.setCurrentPage(parseInt(page));
     }
+
+    const { count, itemsPerPage, currentPage } = this.props;
+
+    if (currentPage > Math.ceil(count / itemsPerPage)) {
+      this.props.setCurrentPage(1);
+    }
   };
 
   componentWillUnmount = () => {
